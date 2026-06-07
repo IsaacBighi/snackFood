@@ -1,15 +1,12 @@
+import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
+import { useTheme } from 'styled-components/native';
 import { ProductCard } from '../../components/ProductCard';
 import { useCart } from '../../context/cartContext';
 import { products } from '../../data/products';
 
-import {
-  CategoriesContainer,
-  CategoryButton,
-  CategoryText,
-  Container,
-} from './styles';
+import { Container } from './styles';
 
 const categories = ['Todos', 'Lanche', 'Pizza', 'Bebida', 'Sobremesa', 'Combo'];
 
@@ -23,8 +20,8 @@ type Product = {
 
 export function Home() {
   const [selectedCategory, setSelectedCategory] = useState('Todos');
-
   const { addToCart } = useCart();
+  const theme = useTheme();
 
   const filteredProducts: Product[] =
     selectedCategory === 'Todos'
@@ -37,21 +34,29 @@ export function Home() {
 
   return (
     <Container>
-      <CategoriesContainer>
-        {categories.map((category) => {
-          const isSelected = selectedCategory === category;
-
-          return (
-            <CategoryButton
-              key={category}
-              isSelected={isSelected}
-              onPress={() => setSelectedCategory(category)}
-            >
-              <CategoryText isSelected={isSelected}>{category}</CategoryText>
-            </CategoryButton>
-          );
-        })}
-      </CategoriesContainer>
+      {/* Container do Picker para cumprir a exigência do Filtro com RNPicker */}
+      <View
+        style={{
+          backgroundColor: '#FFF',
+          margin: 10,
+          borderRadius: 10,
+          borderWidth: 1,
+          borderColor: theme.colors.border || '#F5F5F5',
+          paddingHorizontal: 10,
+          justifyContent: 'center',
+        }}
+      >
+        <Picker
+          selectedValue={selectedCategory}
+          onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+          style={{ height: 50, width: '100%' }}
+          dropdownIconColor={theme.colors.primary}
+        >
+          {categories.map((category) => (
+            <Picker.Item key={category} label={category} value={category} />
+          ))}
+        </Picker>
+      </View>
 
       <FlatList
         data={filteredProducts}

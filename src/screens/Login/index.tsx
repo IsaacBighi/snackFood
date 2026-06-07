@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useState } from 'react';
+import { Text, TouchableOpacity } from 'react-native'; // Importados para fazer o link
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { useAuth } from '../../context/authContext';
@@ -17,7 +18,6 @@ export function Login() {
   const [passwordError, setPasswordError] = useState('');
 
   const { signIn } = useAuth();
-
   const navigation = useNavigation<NavigationProps>();
 
   function handleLogin() {
@@ -46,7 +46,6 @@ export function Login() {
     }
 
     signIn(user);
-
     navigation.navigate('App');
   }
 
@@ -74,10 +73,26 @@ export function Login() {
 
         <Button title="Entrar" onPress={handleLogin} />
 
-        <Button
-          title="Criar conta"
+        {/* Link discreto substituindo o antigo botão de Criar Conta */}
+        <TouchableOpacity
           onPress={() => navigation.navigate('register')}
-        />
+          style={{
+            marginTop: 20,
+            alignSelf: 'center',
+            padding: 10,
+          }}
+        >
+          <Text
+            style={{
+              color: '#E8390E', // Cor primária do seu tema
+              fontSize: 16,
+              fontWeight: '600',
+              textDecorationLine: 'underline', // Deixa o texto sublinhado como um link de internet
+            }}
+          >
+            Não tem uma conta? Cadastre-se
+          </Text>
+        </TouchableOpacity>
       </Form>
     </Container>
   );

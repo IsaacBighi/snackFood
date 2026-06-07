@@ -4,7 +4,7 @@ type ButtonProps = {
   danger?: boolean;
 };
 
-export const Container = styled.SafeAreaView`
+export const Container = styled.View`
   flex: 1;
 `;
 
