@@ -14,7 +14,6 @@ import { Home } from '../screens/Home/index';
 
 const Drawer = createDrawerNavigator();
 
-// Componente customizado do interior do Drawer focado na melhoria do cabeçalho
 function CustomDrawerContent(props: any) {
   const { user, logout } = useAuth();
   const navigation = useNavigation<any>();
@@ -24,7 +23,6 @@ function CustomDrawerContent(props: any) {
     navigation.navigate('Login');
   }
 
-  // Pega a primeira letra do nome para o Avatar (ex: "Isaac" -> "I")
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
 
   return (
@@ -32,13 +30,12 @@ function CustomDrawerContent(props: any) {
       {...props}
       contentContainerStyle={{ flex: 1, backgroundColor: '#FFF' }}
     >
-      {/* CADEÇALHO MELHORADO E ESTILIZADO */}
       <View
         style={{
           paddingTop: 40,
           paddingHorizontal: 20,
           paddingBottom: 24,
-          backgroundColor: '#E8390E', // Cor principal identica ao seu theme.ts
+          backgroundColor: '#E8390E',
           borderBottomLeftRadius: 16,
           borderBottomRightRadius: 16,
           marginBottom: 12,
@@ -50,13 +47,12 @@ function CustomDrawerContent(props: any) {
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {/* Avatar Circular com as Iniciais */}
           <View
             style={{
               width: 56,
               height: 56,
               borderRadius: 28,
-              backgroundColor: '#FAECE7', // primaryLight do seu tema
+              backgroundColor: '#FAECE7',
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: 14,
@@ -75,7 +71,6 @@ function CustomDrawerContent(props: any) {
             </Text>
           </View>
 
-          {/* Textos de identificação do Usuário */}
           <View style={{ flex: 1 }}>
             <Text
               style={{
@@ -115,10 +110,8 @@ function CustomDrawerContent(props: any) {
         </View>
       </View>
 
-      {/* Renderiza a lista padrão de telas do Menu */}
       <DrawerItemList {...props} />
 
-      {/* Rodapé fixo com botão de Sair (CORRIGIDO) */}
       <View
         style={{
           marginTop: 'auto',
@@ -144,7 +137,7 @@ export function AppRoutes() {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#E8390E', // Ajustado para bater com a cor do seu theme.ts
+          backgroundColor: '#E8390E',
         },
         headerTintColor: '#FFF',
         headerTitleStyle: {

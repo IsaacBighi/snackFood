@@ -1,6 +1,6 @@
 import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { ProductCard } from '../../components/ProductCard';
 import { useCart } from '../../context/cartContext';
@@ -34,7 +34,6 @@ export function Home() {
 
   return (
     <Container>
-      {/* Container do Picker para cumprir a exigência do Filtro com RNPicker */}
       <View
         style={{
           backgroundColor: '#FFF',
