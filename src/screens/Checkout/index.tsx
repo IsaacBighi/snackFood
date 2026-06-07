@@ -1,76 +1,97 @@
-import { Alert, FlatList } from 'react-native';
-
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
+import { FlatList, Alert } from 'react-native';
 import { useAuth } from '../../context/authContext';
-
-import { getCartByUser } from '../../sqlite';
+import { getCartByUser, CartItem } from '../../sqlite';
 
 import {
-  CheckoutButton,
-  CheckoutButtonText,
   Container,
-  ItemContainer,
+  CenterContainer,
+  ErrorText,
+  SectionCard,
+  SectionTitle,
+  Row,
+  ItemText,
   ItemName,
-  ItemPrice,
-  Title,
-  TotalContainer,
-  TotalText,
+  ValueText,
+  LabelText,
+  TotalDivider,
+  TotalLabel,
+  TotalValue,
+  SubmitButton,
+  SubmitButtonText
 } from './styles';
 
 export function Checkout() {
   const { user } = useAuth();
+  const [items, setItems] = useState<CartItem[]>([]);
+  const navigation = useNavigation<any>();
+
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.id) {
+        const cartItems = getCartByUser(user.id);
+        setItems(cartItems);
+      }
+    }, [user?.id])
+  );
 
   if (!user?.id) {
     return (
-      <Container>
-        <Title>Usuário não encontrado</Title>
-      </Container>
+      <CenterContainer>
+        <ErrorText>Usuário não encontrado</ErrorText>
+      </CenterContainer>
     );
   }
 
-  const items = getCartByUser(user.id);
-
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0,
-  );
-
-  const deliveryFee = 5;
-
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const deliveryFee = subtotal > 0 ? 5.00 : 0;
   const total = subtotal + deliveryFee;
 
-  function handleCheckout() {
-    Alert.alert('Pedido realizado', 'Seu pedido foi enviado com sucesso!');
+  function handleFinishOrder() {
+    Alert.alert('Sucesso 🎉', 'Seu pedido foi recebido e já está sendo preparado!', [
+      { text: 'OK', onPress: () => navigation.navigate('home') }
+    ]);
   }
 
   return (
     <Container>
-      <Title>Checkout</Title>
+      <SectionCard>
+        <SectionTitle>Resumo dos Itens</SectionTitle>
+        <FlatList
+          data={items}
+          keyExtractor={(item) => item.productId}
+          scrollEnabled={false}
+          renderItem={({ item }) => (
+            <Row>
+              <ItemText>
+                {item.quantity}x <ItemName>{item.name}</ItemName>
+              </ItemText>
+              <ValueText>R$ {(item.price * item.quantity).toFixed(2)}</ValueText>
+            </Row>
+          )}
+        />
+      </SectionCard>
 
-      <FlatList
-        data={items}
-        keyExtractor={(item) => item.productId}
-        renderItem={({ item }) => (
-          <ItemContainer>
-            <ItemName>
-              {item.name} x{item.quantity}
-            </ItemName>
+      <SectionCard>
+        <SectionTitle>Resumo de Valores</SectionTitle>
+        <Row>
+          <LabelText>Subtotal</LabelText>
+          <ValueText>R$ {subtotal.toFixed(2)}</ValueText>
+        </Row>
+        <Row>
+          <LabelText>Taxa de Entrega</LabelText>
+          <ValueText>R$ {deliveryFee.toFixed(2)}</ValueText>
+        </Row>
+        <TotalDivider>
+          <TotalLabel>Valor Total</TotalLabel>
+          <TotalValue>R$ {total.toFixed(2)}</TotalValue>
+        </TotalDivider>
+      </SectionCard>
 
-            <ItemPrice>R$ {(item.price * item.quantity).toFixed(2)}</ItemPrice>
-          </ItemContainer>
-        )}
-      />
-
-      <TotalContainer>
-        <TotalText>Subtotal: R$ {subtotal.toFixed(2)}</TotalText>
-
-        <TotalText>Entrega: R$ {deliveryFee.toFixed(2)}</TotalText>
-
-        <TotalText>Total: R$ {total.toFixed(2)}</TotalText>
-      </TotalContainer>
-
-      <CheckoutButton onPress={handleCheckout}>
-        <CheckoutButtonText>Finalizar Pedido</CheckoutButtonText>
-      </CheckoutButton>
+      <SubmitButton onPress={handleFinishOrder} disabled={items.length === 0}>
+        <SubmitButtonText>Confirmar e Finalizar Pedido</SubmitButtonText>
+      </SubmitButton>
     </Container>
   );
 }

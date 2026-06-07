@@ -1,23 +1,45 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import { FlatList } from 'react-native';
-
-import { CartProductCard } from '../../components/cartProductCard';
 import { useAuth } from '../../context/authContext';
-
-import {
-  type CartItem,
-  decreaseItemQuantity,
-  getCartByUser,
-  increaseItemQuantity,
-  removeItem,
+import { 
+  getCartByUser, 
+  increaseItemQuantity, 
+  decreaseItemQuantity, 
+  removeItem, 
+  CartItem 
 } from '../../sqlite';
 
-import { Container, EmptyText, Footer, TotalText } from './styles';
+import {
+  Container,
+  EmptyContainer,
+  EmptyIcon,
+  EmptyText,
+  Card,
+  ProductImage,
+  InfoContainer,
+  ProductName,
+  ProductCategory,
+  ProductPrice,
+  ActionsContainer,
+  RemoveButton,
+  RemoveButtonText,
+  QuantityControl,
+  QuantityButton,
+  QuantityButtonText,
+  QuantityText,
+  Footer,
+  TotalContainer,
+  TotalLabel,
+  TotalValue,
+  CheckoutButton,
+  CheckoutButtonText
+} from './styles';
 
 export function Cart() {
   const { user } = useAuth();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const navigation = useNavigation<any>();
 
   const refreshCart = useCallback(() => {
     if (!user?.id) return;
@@ -28,12 +50,7 @@ export function Cart() {
   useFocusEffect(
     useCallback(() => {
       refreshCart();
-    }, [refreshCart]),
-  );
-
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0,
+    }, [refreshCart])
   );
 
   function handleIncrease(productId: string) {
@@ -54,32 +71,64 @@ export function Cart() {
     refreshCart();
   }
 
+  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
   return (
     <Container>
       <FlatList
         data={cartItems}
         keyExtractor={(item, index) => `${item.productId}-${index}`}
-        ListEmptyComponent={<EmptyText>Carrinho vazio</EmptyText>}
-        renderItem={({ item }) => (
-          <CartProductCard
-            name={item.name}
-            category={item.category}
-            price={item.price}
-            image={item.image}
-            quantity={item.quantity}
-            onIncrease={() => handleIncrease(item.productId)}
-            onDecrease={() => handleDecrease(item.productId)}
-            onRemove={() => handleRemove(item.productId)}
-          />
+        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => (
+          <EmptyContainer>
+            <EmptyIcon>🛒</EmptyIcon>
+            <EmptyText>Seu carrinho está vazio</EmptyText>
+          </EmptyContainer>
         )}
-        ListFooterComponent={
-          cartItems.length > 0 ? (
-            <Footer>
-              <TotalText>Total: R$ {total.toFixed(2)}</TotalText>
-            </Footer>
-          ) : null
-        }
+        renderItem={({ item }) => (
+          <Card>
+            <ProductImage source={{ uri: item.image }} />
+            
+            <InfoContainer>
+              <ProductName>{item.name}</ProductName>
+              <ProductCategory>{item.category}</ProductCategory>
+              <ProductPrice>R$ {(item.price * item.quantity).toFixed(2)}</ProductPrice>
+            </InfoContainer>
+
+            <ActionsContainer>
+              <RemoveButton onPress={() => handleRemove(item.productId)}>
+                <RemoveButtonText>Remover</RemoveButtonText>
+              </RemoveButton>
+
+              <QuantityControl>
+                <QuantityButton onPress={() => handleDecrease(item.productId)}>
+                  <QuantityButtonText>-</QuantityButtonText>
+                </QuantityButton>
+                
+                <QuantityText>{item.quantity}</QuantityText>
+                
+                <QuantityButton onPress={() => handleIncrease(item.productId)}>
+                  <QuantityButtonText>+</QuantityButtonText>
+                </QuantityButton>
+              </QuantityControl>
+            </ActionsContainer>
+          </Card>
+        )}
       />
+
+      {cartItems.length > 0 && (
+        <Footer>
+          <TotalContainer>
+            <TotalLabel>Total do Pedido</TotalLabel>
+            <TotalValue>R$ {total.toFixed(2)}</TotalValue>
+          </TotalContainer>
+
+          <CheckoutButton onPress={() => navigation.navigate('checkout')}>
+            <CheckoutButtonText>Avançar para o Checkout</CheckoutButtonText>
+          </CheckoutButton>
+        </Footer>
+      )}
     </Container>
   );
 }

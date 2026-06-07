@@ -13,7 +13,7 @@ export const products = [
     category: 'Pizza',
     price: 40,
     image:
-      'https://images.unsplash.com/photo-1601924928376-3f6c7f1d7f64?auto=format&fit=crop&w=800&q=80',
+      'https://cdn0.tudoreceitas.com/pt/posts/9/8/3/pizza_calabresa_e_mussarela_4389_orig.jpg',
   },
   {
     id: '3',
@@ -25,11 +25,11 @@ export const products = [
   },
   {
     id: '4',
-    name: 'Batata Frita',
+    name: 'Lanche com batata Frita',
     category: 'Lanche',
     price: 18,
     image:
-      'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80',
+      'https://s2-redeglobo.glbimg.com/r32EHcVWoZzNrOCdX4qTJgDJV_g=/0x0:2124x1411/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_b58693ed41d04a39826739159bf600a0/internal_photos/bs/2021/b/M/Tf7p1wS4AB71erqfPBMQ/hamburguer-com-batata.jpg',
   },
   {
     id: '5',
@@ -45,7 +45,7 @@ export const products = [
     category: 'Pizza',
     price: 45,
     image:
-      'https://images.unsplash.com/photo-1548365328-9f547f8f1c3f?auto=format&fit=crop&w=800&q=80',
+      'https://www.receitasnestle.com.br/sites/default/files/styles/recipe_detail_desktop_new/public/srh_recipes/2eb7ece4ae9a67b773aa138589e2031d.jpg?itok=8rB5qKP-',
   },
   {
     id: '7',
@@ -69,7 +69,7 @@ export const products = [
     category: 'Sobremesa',
     price: 22,
     image:
-      'https://images.unsplash.com/photo-1626200419199-391ae4be7a41?auto=format&fit=crop&w=800&q=80',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNpqaRtYdqVBmmEZlu1KeMkvJZM5Xaz8faAg&s',
   },
   {
     id: '10',
@@ -77,7 +77,7 @@ export const products = [
     category: 'Pizza',
     price: 48,
     image:
-      'https://images.unsplash.com/photo-1619538188439-0d5c0b9f1c9d?auto=format&fit=crop&w=800&q=80',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSG6ufN33jZ6Yb0lfBWfymW9Ggm7UN7fdYxcg&s',
   },
   {
     id: '11',
@@ -85,7 +85,7 @@ export const products = [
     category: 'Lanche',
     price: 17,
     image:
-      'https://images.unsplash.com/photo-1612392061785-2c1c1b7c7f8f?auto=format&fit=crop&w=800&q=80',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuGscGRCku3EZZZHMRUf_G_f6tk2x4QyykAg&s',
   },
   {
     id: '12',
@@ -105,11 +105,11 @@ export const products = [
   },
   {
     id: '14',
-    name: 'Combo Hambúrguer + Batata',
+    name: 'Combo Hambúrguer + Batata + Refrigerante',
     category: 'Combo',
     price: 42,
     image:
-      'https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=800&q=80',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaHjpRZgdXWBSuUoEWOd2lS1Qxi2RuFhuiSw&s',
   },
   {
     id: '15',
@@ -117,6 +117,6 @@ export const products = [
     category: 'Combo',
     price: 60,
     image:
-      'https://images.unsplash.com/photo-1617196035154-1e7c7c5a9d36?auto=format&fit=crop&w=800&q=80',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQG9V3mbFqLIXaTuz21T4s525CNH-g71WB1A&s',
   },
 ];
