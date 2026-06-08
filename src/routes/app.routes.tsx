@@ -21,7 +21,13 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
       <DrawerItem
         label="Sair da Conta"
         labelStyle={{ color: '#FF4D4D', fontWeight: 'bold' }}
-        onPress={() => signOut()}
+        onPress={() => {
+          props.navigation.closeDrawer();
+          setTimeout(() => {
+            signOut();
+            props.navigation.navigate('Login');
+          }, 100);
+        }}
       />
     </DrawerContentScrollView>
   );
