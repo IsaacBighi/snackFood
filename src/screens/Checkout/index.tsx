@@ -1,8 +1,10 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback, useState } from 'react';
 import { Alert, FlatList, Platform, TouchableOpacity } from 'react-native';
 import { useAuth } from '../../context/authContext';
 import { type CartItem, getCartByUser } from '../../sqlite';
+import type { RootStackParamList } from '../../types/navigation';
 
 import {
   CenterContainer,
@@ -22,10 +24,13 @@ import {
   ValueText,
 } from './styles';
 
+// Substitui o tipo 'any' pela tipagem correta de navegação do seu projeto
+type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
+
 export function Checkout() {
   const { user } = useAuth();
   const [items, setItems] = useState<CartItem[]>([]);
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NavigationProps>();
 
   useFocusEffect(
     useCallback(() => {
@@ -52,15 +57,14 @@ export function Checkout() {
   const total = subtotal + deliveryFee;
 
   function handleFinishOrder() {
-    // Alerta híbrido: usa alert padrão na web (Snack) e Alert.alert no celular local
     if (Platform.OS === 'web') {
       alert('Sucesso 🎉\nSeu pedido foi recebido e já está sendo preparado!');
-      navigation.navigate('home');
+      navigation.navigate('App'); // Certifique-se de que 'App' ou 'home' é o nome correto da rota pós-checkout no seu RootStackParamList
     } else {
       Alert.alert(
         'Sucesso 🎉',
         'Seu pedido foi recebido e já está sendo preparado!',
-        [{ text: 'OK', onPress: () => navigation.navigate('home') }],
+        [{ text: 'OK', onPress: () => navigation.navigate('App') }],
       );
     }
   }
@@ -102,7 +106,6 @@ export function Checkout() {
         </TotalDivider>
       </SectionCard>
 
-      {/* Envolvendo o SubmitButton com TouchableOpacity nativo */}
       <TouchableOpacity
         onPress={handleFinishOrder}
         disabled={items.length === 0}
