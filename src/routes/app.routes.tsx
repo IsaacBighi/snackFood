@@ -1,132 +1,28 @@
 import {
   createDrawerNavigator,
+  type DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import { useNavigation } from '@react-navigation/native';
-import { Text, View } from 'react-native';
 import { useAuth } from '../context/authContext';
-
-import { Cart } from '../screens/Cart/index';
-import { Checkout } from '../screens/Checkout/index';
-import { Home } from '../screens/Home/index';
+import { Cart } from '../screens/Cart';
+import { Checkout } from '../screens/Checkout';
+import { Home } from '../screens/Home';
 
 const Drawer = createDrawerNavigator();
 
-function CustomDrawerContent(props: any) {
-  const { user, logout } = useAuth();
-  const navigation = useNavigation<any>();
-
-  function handleLogout() {
-    logout();
-    navigation.navigate('Login');
-  }
-
-  const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
+function CustomDrawerContent(props: DrawerContentComponentProps) {
+  const { signOut } = useAuth();
 
   return (
-    <DrawerContentScrollView
-      {...props}
-      contentContainerStyle={{ flex: 1, backgroundColor: '#FFF' }}
-    >
-      <View
-        style={{
-          paddingTop: 40,
-          paddingHorizontal: 20,
-          paddingBottom: 24,
-          backgroundColor: '#E8390E',
-          borderBottomLeftRadius: 16,
-          borderBottomRightRadius: 16,
-          marginBottom: 12,
-          elevation: 5,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 3 },
-          shadowOpacity: 0.2,
-          shadowRadius: 4,
-        }}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 28,
-              backgroundColor: '#FAECE7',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginRight: 14,
-              borderWidth: 2,
-              borderColor: '#FFF',
-            }}
-          >
-            <Text
-              style={{
-                color: '#E8390E',
-                fontSize: 22,
-                fontWeight: 'bold',
-              }}
-            >
-              {userInitial}
-            </Text>
-          </View>
-
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{
-                color: '#FFF',
-                fontSize: 13,
-                fontWeight: '600',
-                opacity: 0.8,
-                textTransform: 'uppercase',
-                letterSpacing: 0.5,
-              }}
-            >
-              Bem-vindo,
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={{
-                color: '#FFF',
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginTop: 2,
-              }}
-            >
-              {user?.name || 'Usuário'}
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={{
-                color: '#FAECE7',
-                fontSize: 13,
-                opacity: 0.9,
-                marginTop: 2,
-              }}
-            >
-              {user?.email || 'usuario@email.com'}
-            </Text>
-          </View>
-        </View>
-      </View>
-
+    <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-
-      <View
-        style={{
-          marginTop: 'auto',
-          borderTopWidth: 1,
-          borderColor: '#F5F5F5',
-          padding: 10,
-        }}
-      >
-        <DrawerItem
-          label="Sair da Conta"
-          labelStyle={{ color: '#E8390E', fontWeight: 'bold' }}
-          onPress={handleLogout}
-          icon={() => <Text style={{ fontSize: 16 }}>🚪</Text>}
-        />
-      </View>
+      <DrawerItem
+        label="Sair da Conta"
+        labelStyle={{ color: '#FF4D4D', fontWeight: 'bold' }}
+        onPress={() => signOut()}
+      />
     </DrawerContentScrollView>
   );
 }
@@ -136,43 +32,25 @@ export function AppRoutes() {
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        headerStyle: {
-          backgroundColor: '#E8390E',
-        },
         headerTintColor: '#FFF',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 20,
-        },
+        headerStyle: { backgroundColor: '#E8390E' },
         drawerActiveTintColor: '#E8390E',
-        drawerInactiveTintColor: '#1A1A1A',
-        drawerLabelStyle: {
-          fontWeight: 'bold',
-        },
       }}
     >
       <Drawer.Screen
         name="home"
         component={Home}
-        options={{
-          title: 'Cardápio',
-        }}
+        options={{ title: 'Cardápio Inicial' }}
       />
-
       <Drawer.Screen
         name="cart"
         component={Cart}
-        options={{
-          title: 'Carrinho',
-        }}
+        options={{ title: 'Meu Carrinho' }}
       />
-
       <Drawer.Screen
         name="checkout"
         component={Checkout}
-        options={{
-          title: 'Checkout',
-        }}
+        options={{ title: 'Finalizar Pedido' }}
       />
     </Drawer.Navigator>
   );

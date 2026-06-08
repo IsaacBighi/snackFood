@@ -1,4 +1,8 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import {
+  type NavigationProp,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useAuth } from '../../context/authContext';
@@ -9,6 +13,10 @@ import {
   increaseItemQuantity,
   removeItem,
 } from '../../sqlite';
+
+type CartStackParamList = {
+  checkout: undefined;
+};
 
 import {
   ActionsContainer,
@@ -39,7 +47,7 @@ import {
 export function Cart() {
   const { user } = useAuth();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NavigationProp<CartStackParamList>>();
 
   const refreshCart = useCallback(() => {
     if (!user?.id) return;

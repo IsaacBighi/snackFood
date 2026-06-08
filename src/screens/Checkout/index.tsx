@@ -1,10 +1,10 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NavigationProp } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import { Alert, FlatList, Platform, TouchableOpacity } from 'react-native';
 import { useAuth } from '../../context/authContext';
+import { useCart } from '../../context/cartContext';
 import { type CartItem, getCartByUser } from '../../sqlite';
-import type { RootStackParamList } from '../../types/navigation';
 
 import {
   CenterContainer,
@@ -24,13 +24,17 @@ import {
   ValueText,
 } from './styles';
 
-// Substitui o tipo 'any' pela tipagem correta de navegação do seu projeto
-type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
+type DrawerParamList = {
+  home: undefined;
+  cart: undefined;
+  checkout: undefined;
+};
 
 export function Checkout() {
   const { user } = useAuth();
   const [items, setItems] = useState<CartItem[]>([]);
-  const navigation = useNavigation<NavigationProps>();
+  const { clearCart } = useCart();
+  const navigation = useNavigation<NavigationProp<DrawerParamList, 'checkout'>>();
 
   useFocusEffect(
     useCallback(() => {
@@ -57,15 +61,17 @@ export function Checkout() {
   const total = subtotal + deliveryFee;
 
   function handleFinishOrder() {
+    clearCart();
+
+    const successMessage = 'Sucesso 🎉\nSeu pedido foi recebido e já está sendo preparado!';
+
     if (Platform.OS === 'web') {
-      alert('Sucesso 🎉\nSeu pedido foi recebido e já está sendo preparado!');
-      navigation.navigate('App'); // Certifique-se de que 'App' ou 'home' é o nome correto da rota pós-checkout no seu RootStackParamList
+      alert(successMessage);
+      navigation.navigate('home');
     } else {
-      Alert.alert(
-        'Sucesso 🎉',
-        'Seu pedido foi recebido e já está sendo preparado!',
-        [{ text: 'OK', onPress: () => navigation.navigate('App') }],
-      );
+      Alert.alert('Sucesso 🎉', successMessage, [
+        { text: 'OK', onPress: () => navigation.navigate('home') },
+      ]);
     }
   }
 

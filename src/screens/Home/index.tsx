@@ -1,78 +1,67 @@
-import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
 import { FlatList, View } from 'react-native';
-import { useTheme } from 'styled-components';
 import { ProductCard } from '../../components/ProductCard';
 import { useCart } from '../../context/cartContext';
 import { products } from '../../data/products';
 
-import { Container } from './styles';
+import {
+  CategoriesContainer,
+  CategoryButton,
+  CategoryText,
+  Container,
+} from './styles';
 
-const categories = ['Todos', 'Lanche', 'Pizza', 'Bebida', 'Sobremesa', 'Combo'];
-
-type Product = {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  image: string;
-};
+const CATEGORIES = ['Todos', 'Lanche', 'Pizza', 'Bebida', 'Sobremesa', 'Combo'];
 
 export function Home() {
   const [selectedCategory, setSelectedCategory] = useState('Todos');
-  const { addToCart } = useCart();
-  const theme = useTheme();
+  const { addItem } = useCart();
 
-  const filteredProducts: Product[] =
+  const filteredProducts =
     selectedCategory === 'Todos'
       ? products
       : products.filter((product) => product.category === selectedCategory);
 
-  function handleAddToCart(product: Product) {
-    addToCart(product);
-  }
-
   return (
     <Container>
-      <View
-        style={{
-          backgroundColor: '#FFF',
-          margin: 10,
-          borderRadius: 10,
-          borderWidth: 1,
-          borderColor: theme.colors.border || '#F5F5F5',
-          paddingHorizontal: 10,
-          justifyContent: 'center',
-        }}
-      >
-        <Picker
-          selectedValue={selectedCategory}
-          onValueChange={(itemValue) => setSelectedCategory(itemValue)}
-          style={{ height: 50, width: '100%' }}
-          dropdownIconColor={theme.colors.primary}
-        >
-          {categories.map((category) => (
-            <Picker.Item key={category} label={category} value={category} />
+      <View style={{ height: 50 }}>
+        <CategoriesContainer>
+          {CATEGORIES.map((category) => (
+            <CategoryButton
+              key={category}
+              isSelected={selectedCategory === category}
+              onPress={() => setSelectedCategory(category)}
+            >
+              <CategoryText isSelected={selectedCategory === category}>
+                {category}
+              </CategoryText>
+            </CategoryButton>
           ))}
-        </Picker>
+        </CategoriesContainer>
       </View>
 
       <FlatList
         data={filteredProducts}
-        keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: 20,
-        }}
+        keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
           <ProductCard
             name={item.name}
             category={item.category}
             price={item.price}
             image={item.image}
-            onAddToCart={() => handleAddToCart(item)}
+            onAddToCart={() => {
+              addItem({
+                id: String(item.id),
+                name: item.name,
+                category: item.category,
+                price: Number(item.price),
+                image: item.image || '',
+              });
+            }}
           />
         )}
+        contentContainerStyle={{ paddingBottom: 24 }}
+        showsVerticalScrollIndicator={false}
       />
     </Container>
   );

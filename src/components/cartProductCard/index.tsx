@@ -1,103 +1,37 @@
-import { Image, Text } from 'react-native';
-
+import { View } from 'react-native';
+import { Button } from '../Button';
 import {
-  ActionButton,
-  Actions,
-  Category,
   Container,
-  ImageBox,
-  Info,
-  InfoRow,
-  Name,
-  Price,
-  Quantity,
-  QuantityControls,
-  RemoveButton,
+  ProductCategory,
+  ProductName,
+  ProductPrice,
 } from './styles';
 
-type Props = {
+interface ProductCardProps {
   name: string;
   category: string;
   price: number;
-  image: string;
-  quantity: number;
+  image?: string;
+  onAddToCart: () => void;
+}
 
-  onIncrease: () => void;
-  onDecrease: () => void;
-  onRemove: () => void;
-};
-
-export function CartProductCard({
+export function ProductCard({
   name,
   category,
   price,
-  image,
-  quantity,
-  onIncrease,
-  onDecrease,
-  onRemove,
-}: Props) {
+  onAddToCart,
+}: ProductCardProps) {
   return (
     <Container>
-      <InfoRow>
-        <ImageBox>
-          <Image
-            source={{ uri: image }}
-            style={{
-              width: '100%',
-              height: '100%',
-            }}
-          />
-        </ImageBox>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <ProductName>{name}</ProductName>
+        <ProductCategory>{category}</ProductCategory>
+        <ProductPrice>R$ {Number(price).toFixed(2)}</ProductPrice>
+      </View>
 
-        <Info>
-          <Name numberOfLines={1}>{name}</Name>
-
-          <Category>{category}</Category>
-
-          <Price>R$ {price.toFixed(2)}</Price>
-        </Info>
-      </InfoRow>
-
-      <Actions>
-        <QuantityControls>
-          <ActionButton onPress={onDecrease}>
-            <Text
-              style={{
-                color: '#FFF',
-                fontSize: 18,
-                fontWeight: 'bold',
-              }}
-            >
-              -
-            </Text>
-          </ActionButton>
-
-          <Quantity>{quantity}</Quantity>
-
-          <ActionButton onPress={onIncrease}>
-            <Text
-              style={{
-                color: '#FFF',
-                fontSize: 18,
-                fontWeight: 'bold',
-              }}
-            >
-              +
-            </Text>
-          </ActionButton>
-        </QuantityControls>
-
-        <RemoveButton onPress={onRemove}>
-          <Text
-            style={{
-              fontSize: 18,
-            }}
-          >
-            🗑
-          </Text>
-        </RemoveButton>
-      </Actions>
+      <View style={{ marginTop: 12 }}>
+        <Button title="Adicionar ao carrinho" onPress={onAddToCart} />
+      </View>
     </Container>
   );
 }

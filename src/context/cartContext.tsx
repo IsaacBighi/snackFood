@@ -1,5 +1,11 @@
 import type React from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {
   addProductToCart,
   type CartItem,
@@ -35,18 +41,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const [items, setItems] = useState<CartItem[]>([]);
   const { user } = useAuth();
 
-  const loadCartItems = () => {
+  const loadCartItems = useCallback(() => {
     if (user?.id) {
       const cartData = getCartByUser(user.id);
       setItems(cartData);
     } else {
       setItems([]);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     loadCartItems();
-  }, [user]);
+  }, [loadCartItems]);
 
   const addItem = (product: Product) => {
     if (!user?.id) return;

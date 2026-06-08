@@ -13,19 +13,22 @@ export const Container = styled(View)`
   shadow-radius: 5px;
 `;
 
-export const Name = styled(Text)`
+// Corrigido: Mudou de Name para ProductName e usa cor fixa estável para a Web
+export const ProductName = styled(Text)`
   font-size: 18px;
   font-weight: bold;
   color: #1A1A1A;
 `;
 
-export const Category = styled(Text)`
+// Corrigido: Mudou de Category para ProductCategory
+export const ProductCategory = styled(Text)`
   font-size: 14px;
   margin-top: 4px;
   color: #666;
 `;
 
-export const Price = styled(Text)`
+// Corrigido: Mudou de Price para ProductPrice e usa o laranja principal fixo
+export const ProductPrice = styled(Text)`
   font-size: 16px;
   font-weight: bold;
   margin-top: 8px;
