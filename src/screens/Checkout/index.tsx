@@ -1,5 +1,5 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NavigationProp } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import { Alert, FlatList, Platform, TouchableOpacity } from 'react-native';
 import { useAuth } from '../../context/authContext';
@@ -34,7 +34,8 @@ export function Checkout() {
   const { user } = useAuth();
   const [items, setItems] = useState<CartItem[]>([]);
   const { clearCart } = useCart();
-  const navigation = useNavigation<NavigationProp<DrawerParamList, 'checkout'>>();
+  const navigation =
+    useNavigation<NavigationProp<DrawerParamList, 'checkout'>>();
 
   useFocusEffect(
     useCallback(() => {
@@ -63,7 +64,8 @@ export function Checkout() {
   function handleFinishOrder() {
     clearCart();
 
-    const successMessage = 'Sucesso 🎉\nSeu pedido foi recebido e já está sendo preparado!';
+    const successMessage =
+      'Sucesso 🎉\nSeu pedido foi recebido e já está sendo preparado!';
 
     if (Platform.OS === 'web') {
       alert(successMessage);
