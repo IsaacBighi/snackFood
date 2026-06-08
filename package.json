@@ -2,12 +2,6 @@
   "name": "snackfood",
   "version": "1.0.0",
   "main": "index.ts",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
-  },
   "dependencies": {
     "@react-native-picker/picker": "2.11.1",
     "@react-navigation/drawer": "^7.10.3",
