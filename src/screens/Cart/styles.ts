@@ -1,29 +1,30 @@
-import styled from 'styled-components/native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import styled from 'styled-components';
 
-export const Container = styled.View`
+export const Container = styled(View)`
   flex: 1;
   background-color: #FAFAFA;
 `;
 
-export const EmptyContainer = styled.View`
+export const EmptyContainer = styled(View)`
   flex: 1;
   align-items: center;
   justify-content: center;
   margin-top: 80px;
 `;
 
-export const EmptyIcon = styled.Text`
+export const EmptyIcon = styled(Text)`
   font-size: 40px;
   margin-bottom: 16px;
 `;
 
-export const EmptyText = styled.Text`
+export const EmptyText = styled(Text)`
   font-size: 18px;
   font-weight: bold;
   color: #666;
 `;
 
-export const Card = styled.View`
+export const Card = styled(View)`
   flex-direction: row;
   background-color: #FFF;
   border-radius: 12px;
@@ -36,43 +37,43 @@ export const Card = styled.View`
   shadow-radius: 2px;
 `;
 
-export const ProductImage = styled.Image`
+export const ProductImage = styled(Image)`
   width: 70px;
   height: 70px;
   border-radius: 8px;
   background-color: #F5F5F5;
 `;
 
-export const InfoContainer = styled.View`
+export const InfoContainer = styled(View)`
   flex: 1;
   margin-left: 12px;
 `;
 
-export const ProductName = styled.Text`
+export const ProductName = styled(Text)`
   font-size: 16px;
   font-weight: bold;
   color: #1A1A1A;
 `;
 
-export const ProductCategory = styled.Text`
+export const ProductCategory = styled(Text)`
   font-size: 12px;
   color: #888;
   margin-vertical: 2px;
 `;
 
-export const ProductPrice = styled.Text`
+export const ProductPrice = styled(Text)`
   font-size: 15px;
   font-weight: bold;
   color: #E8390E;
 `;
 
-export const ActionsContainer = styled.View`
+export const ActionsContainer = styled(View)`
   align-items: flex-end;
   justify-content: space-between;
   height: 70px;
 `;
 
-export const RemoveButton = styled.TouchableOpacity`
+export const RemoveButton = styled(TouchableOpacity)`
   background-color: #FFF5F5;
   padding-horizontal: 8px;
   padding-vertical: 4px;
@@ -81,14 +82,14 @@ export const RemoveButton = styled.TouchableOpacity`
   border-color: #FFE3E3;
 `;
 
-export const RemoveButtonText = styled.Text`
+export const RemoveButtonText = styled(Text)`
   color: #FF4D4D;
   font-size: 11px;
   font-weight: bold;
   text-transform: uppercase;
 `;
 
-export const QuantityControl = styled.View`
+export const QuantityControl = styled(View)`
   flex-direction: row;
   align-items: center;
   background-color: #F5F5F5;
@@ -96,7 +97,7 @@ export const QuantityControl = styled.View`
   padding: 4px;
 `;
 
-export const QuantityButton = styled.TouchableOpacity`
+export const QuantityButton = styled(TouchableOpacity)`
   width: 28px;
   height: 28px;
   border-radius: 14px;
@@ -106,20 +107,20 @@ export const QuantityButton = styled.TouchableOpacity`
   elevation: 1;
 `;
 
-export const QuantityButtonText = styled.Text`
+export const QuantityButtonText = styled(Text)`
   font-size: 16px;
   font-weight: bold;
   color: #333;
 `;
 
-export const QuantityText = styled.Text`
+export const QuantityText = styled(Text)`
   margin-horizontal: 12px;
   font-size: 14px;
   font-weight: bold;
   color: #333;
 `;
 
-export const Footer = styled.View`
+export const Footer = styled(View)`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -134,26 +135,26 @@ export const Footer = styled.View`
   shadow-radius: 5px;
 `;
 
-export const TotalContainer = styled.View`
+export const TotalContainer = styled(View)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
 `;
 
-export const TotalLabel = styled.Text`
+export const TotalLabel = styled(Text)`
   font-size: 16px;
   color: #666;
   font-weight: 500;
 `;
 
-export const TotalValue = styled.Text`
+export const TotalValue = styled(Text)`
   font-size: 22px;
   font-weight: bold;
   color: #1A1A1A;
 `;
 
-export const CheckoutButton = styled.TouchableOpacity`
+export const CheckoutButton = styled(TouchableOpacity)`
   background-color: #E8390E;
   border-radius: 12px;
   padding-vertical: 14px;
@@ -161,7 +162,7 @@ export const CheckoutButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const CheckoutButtonText = styled.Text`
+export const CheckoutButtonText = styled(Text)`
   color: #FFF;
   font-size: 16px;
   font-weight: bold;

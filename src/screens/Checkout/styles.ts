@@ -1,27 +1,28 @@
-import styled from 'styled-components/native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import styled from 'styled-components';
 
 interface ButtonProps {
   disabled: boolean;
 }
 
-export const Container = styled.View`
+export const Container = styled(View)`
   flex: 1;
   background-color: #FAFAFA;
   padding: 16px;
 `;
 
-export const CenterContainer = styled.View`
+export const CenterContainer = styled(View)`
   flex: 1;
   align-items: center;
   justify-content: center;
 `;
 
-export const ErrorText = styled.Text`
+export const ErrorText = styled(Text)`
   font-size: 16px;
   font-weight: bold;
 `;
 
-export const SectionCard = styled.View`
+export const SectionCard = styled(View)`
   background-color: #FFF;
   border-radius: 12px;
   padding: 16px;
@@ -32,7 +33,7 @@ export const SectionCard = styled.View`
   shadow-radius: 2px;
 `;
 
-export const SectionTitle = styled.Text`
+export const SectionTitle = styled(Text)`
   font-size: 16px;
   font-weight: bold;
   color: #1A1A1A;
@@ -42,34 +43,34 @@ export const SectionTitle = styled.Text`
   padding-bottom: 8px;
 `;
 
-export const Row = styled.View`
+export const Row = styled(View)`
   flex-direction: row;
   justify-content: space-between;
   margin-vertical: 6px;
 `;
 
-export const ItemText = styled.Text`
+export const ItemText = styled(Text)`
   font-size: 14px;
   color: #555;
   flex: 1;
 `;
 
-export const ItemName = styled.Text`
+export const ItemName = styled(Text)`
   color: #1A1A1A;
 `;
 
-export const ValueText = styled.Text`
+export const ValueText = styled(Text)`
   font-size: 14px;
   font-weight: 500;
   color: #1A1A1A;
 `;
 
-export const LabelText = styled.Text`
+export const LabelText = styled(Text)`
   font-size: 14px;
   color: #666;
 `;
 
-export const TotalDivider = styled.View`
+export const TotalDivider = styled(View)`
   flex-direction: row;
   justify-content: space-between;
   margin-top: 12px;
@@ -78,20 +79,20 @@ export const TotalDivider = styled.View`
   border-color: #F0F0F0;
 `;
 
-export const TotalLabel = styled.Text`
+export const TotalLabel = styled(Text)`
   font-size: 16px;
   font-weight: bold;
   color: #1A1A1A;
 `;
 
-export const TotalValue = styled.Text`
+export const TotalValue = styled(Text)`
   font-size: 20px;
   font-weight: bold;
   color: #E8390E;
 `;
 
-export const SubmitButton = styled.TouchableOpacity<ButtonProps>`
-  background-color: ${props => props.disabled ? '#CCC' : '#E8390E'};
+export const SubmitButton = styled(TouchableOpacity)<ButtonProps>`
+  background-color: ${(props) => (props.disabled ? '#CCC' : '#E8390E')};
   border-radius: 12px;
   padding-vertical: 16px;
   align-items: center;
@@ -99,7 +100,7 @@ export const SubmitButton = styled.TouchableOpacity<ButtonProps>`
   margin-top: auto;
 `;
 
-export const SubmitButtonText = styled.Text`
+export const SubmitButtonText = styled(Text)`
   color: #FFF;
   font-size: 16px;
   font-weight: bold;
