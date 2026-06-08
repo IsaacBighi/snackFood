@@ -1,10 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import { Platform } from 'react-native';
 
-// Verifica se está rodando no navegador/web (Snack)
 const isWeb = Platform.OS === 'web';
 
-// Abre o banco apenas se NÃO for ambiente web
 export const database = !isWeb ? SQLite.openDatabaseSync('snackfood.db') : null;
 
 export type User = {
@@ -25,7 +23,6 @@ export type CartItem = {
   quantity: number;
 };
 
-// Simulador de memória para quando estiver na Web (Snack)
 const usersTable: User[] = [];
 let cartTable: CartItem[] = [];
 let nextUserId = 1;

@@ -5,7 +5,6 @@ import { Text, TouchableOpacity } from 'react-native';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { useAuth } from '../../context/authContext';
-import { loginUser } from '../../sqlite';
 import type { RootStackParamList } from '../../types/navigation';
 import { Container, Form, Title } from './styles';
 
@@ -20,7 +19,7 @@ export function Login() {
   const { signIn } = useAuth();
   const navigation = useNavigation<NavigationProps>();
 
-  function handleLogin() {
+  async function handleLogin() {
     setEmailError('');
     setPasswordError('');
 
@@ -38,14 +37,13 @@ export function Login() {
 
     if (hasError) return;
 
-    const user = loginUser(email, password);
+    const success = await signIn(email, password);
 
-    if (!user) {
+    if (!success) {
       setPasswordError('E-mail ou senha incorretos');
       return;
     }
 
-    signIn(user);
     navigation.navigate('App');
   }
 

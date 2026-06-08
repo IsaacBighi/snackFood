@@ -10,7 +10,6 @@ import {
 } from '../sqlite';
 import { useAuth } from './authContext';
 
-// Definição da estrutura do produto para eliminar o "any"
 interface Product {
   id: string | number;
   name: string;
@@ -79,11 +78,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const clearCart = () => {
+    // 1. Verificamos se o id existe
     if (!user?.id) return;
 
-    // Corrigido: Chaves acrescentadas para garantir que o forEach não retorna nada
+    // 2. Criamos uma constante segura que o TypeScript sabe que nunca será nula
+    const userId = user.id;
+
+    // 3. Usamos a constante dentro do loop (adeus exclamação!)
     items.forEach((item) => {
-      removeItem(user.id!, item.productId);
+      removeItem(userId, item.productId);
     });
 
     loadCartItems();
