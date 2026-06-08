@@ -1,9 +1,5 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, View } from 'react-native';
 import styled from 'styled-components';
-
-interface ButtonProps {
-  disabled: boolean;
-}
 
 export const Container = styled(View)`
   flex: 1;
