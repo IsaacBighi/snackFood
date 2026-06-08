@@ -86,3 +86,18 @@ export const TotalValue = styled(Text)`
   font-weight: bold;
   color: #E8390E;
 `;
+
+export const SubmitButton = styled(View)`
+  background-color: #E8390E;
+  border-radius: 12px;
+  padding-vertical: 16px;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+`;
+
+export const SubmitButtonText = styled(Text)`
+  color: #FFF;
+  font-size: 16px;
+  font-weight: bold;
+`;
