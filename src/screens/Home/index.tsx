@@ -1,7 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
 import { FlatList, View } from 'react-native';
-import { useTheme } from 'styled-components/native';
+import { useTheme } from 'styled-components';
 import { ProductCard } from '../../components/ProductCard';
 import { useCart } from '../../context/cartContext';
 import { products } from '../../data/products';

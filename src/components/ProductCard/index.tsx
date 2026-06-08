@@ -1,5 +1,5 @@
 import { Image, TouchableOpacity, View } from 'react-native';
-import { useTheme } from 'styled-components/native';
+import { useTheme } from 'styled-components';
 import { Category, Container, Name, Price } from './styles';
 
 type Props = {
