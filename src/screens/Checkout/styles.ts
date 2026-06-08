@@ -16,6 +16,7 @@ export const CenterContainer = styled(View)`
 export const ErrorText = styled(Text)`
   font-size: 16px;
   font-weight: bold;
+  color: #FF4D4D;
 `;
 
 export const SectionCard = styled(View)`

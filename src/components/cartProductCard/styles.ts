@@ -16,7 +16,7 @@ export const Container = styled(View)`
 export const Name = styled(Text)`
   font-size: 18px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.text};
+  color: #1A1A1A;
 `;
 
 export const Category = styled(Text)`
@@ -29,5 +29,5 @@ export const Price = styled(Text)`
   font-size: 16px;
   font-weight: bold;
   margin-top: 8px;
-  color: ${({ theme }) => theme.colors.primary};
+  color: #E8390E;
 `;
