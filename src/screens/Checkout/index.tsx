@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
-import { Alert, FlatList } from 'react-native';
+import { Alert, FlatList, Platform, TouchableOpacity } from 'react-native';
 import { useAuth } from '../../context/authContext';
 import { type CartItem, getCartByUser } from '../../sqlite';
 
@@ -52,11 +52,17 @@ export function Checkout() {
   const total = subtotal + deliveryFee;
 
   function handleFinishOrder() {
-    Alert.alert(
-      'Sucesso 🎉',
-      'Seu pedido foi recebido e já está sendo preparado!',
-      [{ text: 'OK', onPress: () => navigation.navigate('home') }],
-    );
+    // Alerta híbrido: usa alert padrão na web (Snack) e Alert.alert no celular local
+    if (Platform.OS === 'web') {
+      alert('Sucesso 🎉\nSeu pedido foi recebido e já está sendo preparado!');
+      navigation.navigate('home');
+    } else {
+      Alert.alert(
+        'Sucesso 🎉',
+        'Seu pedido foi recebido e já está sendo preparado!',
+        [{ text: 'OK', onPress: () => navigation.navigate('home') }],
+      );
+    }
   }
 
   return (
@@ -96,9 +102,17 @@ export function Checkout() {
         </TotalDivider>
       </SectionCard>
 
-      <SubmitButton onPress={handleFinishOrder} disabled={items.length === 0}>
-        <SubmitButtonText>Confirmar e Finalizar Pedido</SubmitButtonText>
-      </SubmitButton>
+      {/* Envolvendo o SubmitButton com TouchableOpacity nativo */}
+      <TouchableOpacity
+        onPress={handleFinishOrder}
+        disabled={items.length === 0}
+        activeOpacity={0.7}
+        style={{ marginTop: 'auto', width: '100%' }}
+      >
+        <SubmitButton>
+          <SubmitButtonText>Confirmar e Finalizar Pedido</SubmitButtonText>
+        </SubmitButton>
+      </TouchableOpacity>
     </Container>
   );
 }

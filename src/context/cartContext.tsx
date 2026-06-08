@@ -78,13 +78,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const clearCart = () => {
-    // 1. Verificamos se o id existe
     if (!user?.id) return;
 
-    // 2. Criamos uma constante segura que o TypeScript sabe que nunca será nula
     const userId = user.id;
 
-    // 3. Usamos a constante dentro do loop (adeus exclamação!)
     items.forEach((item) => {
       removeItem(userId, item.productId);
     });
