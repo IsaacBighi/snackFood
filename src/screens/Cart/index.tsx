@@ -2,38 +2,38 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useAuth } from '../../context/authContext';
-import { 
-  getCartByUser, 
-  increaseItemQuantity, 
-  decreaseItemQuantity, 
-  removeItem, 
-  CartItem 
+import {
+  type CartItem,
+  decreaseItemQuantity,
+  getCartByUser,
+  increaseItemQuantity,
+  removeItem,
 } from '../../sqlite';
 
 import {
+  ActionsContainer,
+  Card,
+  CheckoutButton,
+  CheckoutButtonText,
   Container,
   EmptyContainer,
   EmptyIcon,
   EmptyText,
-  Card,
-  ProductImage,
+  Footer,
   InfoContainer,
-  ProductName,
   ProductCategory,
+  ProductImage,
+  ProductName,
   ProductPrice,
-  ActionsContainer,
-  RemoveButton,
-  RemoveButtonText,
-  QuantityControl,
   QuantityButton,
   QuantityButtonText,
+  QuantityControl,
   QuantityText,
-  Footer,
+  RemoveButton,
+  RemoveButtonText,
   TotalContainer,
   TotalLabel,
   TotalValue,
-  CheckoutButton,
-  CheckoutButtonText
 } from './styles';
 
 export function Cart() {
@@ -50,7 +50,7 @@ export function Cart() {
   useFocusEffect(
     useCallback(() => {
       refreshCart();
-    }, [refreshCart])
+    }, [refreshCart]),
   );
 
   function handleIncrease(productId: string) {
@@ -71,7 +71,10 @@ export function Cart() {
     refreshCart();
   }
 
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
 
   return (
     <Container>
@@ -89,11 +92,13 @@ export function Cart() {
         renderItem={({ item }) => (
           <Card>
             <ProductImage source={{ uri: item.image }} />
-            
+
             <InfoContainer>
               <ProductName>{item.name}</ProductName>
               <ProductCategory>{item.category}</ProductCategory>
-              <ProductPrice>R$ {(item.price * item.quantity).toFixed(2)}</ProductPrice>
+              <ProductPrice>
+                R$ {(item.price * item.quantity).toFixed(2)}
+              </ProductPrice>
             </InfoContainer>
 
             <ActionsContainer>
@@ -105,9 +110,9 @@ export function Cart() {
                 <QuantityButton onPress={() => handleDecrease(item.productId)}>
                   <QuantityButtonText>-</QuantityButtonText>
                 </QuantityButton>
-                
+
                 <QuantityText>{item.quantity}</QuantityText>
-                
+
                 <QuantityButton onPress={() => handleIncrease(item.productId)}>
                   <QuantityButtonText>+</QuantityButtonText>
                 </QuantityButton>

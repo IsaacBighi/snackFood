@@ -7,10 +7,6 @@ export function initDatabase() {
   createCartTable();
 }
 
-// ==========================
-// USERS
-// ==========================
-
 export function createTables() {
   database.execSync(`
     CREATE TABLE IF NOT EXISTS users (
@@ -21,10 +17,6 @@ export function createTables() {
     );
   `);
 }
-
-// ==========================
-// CART (CORRIGIDO - COMPLETO)
-// ==========================
 
 export function createCartTable() {
   database.execSync(`
@@ -41,10 +33,6 @@ export function createCartTable() {
     );
   `);
 }
-
-// ==========================
-// TYPES
-// ==========================
 
 export type User = {
   id?: number;
@@ -63,10 +51,6 @@ export type CartItem = {
   price: number;
   quantity: number;
 };
-
-// ==========================
-// USERS
-// ==========================
 
 export function createUser({ name, email, password }: User) {
   database.runSync(
@@ -90,9 +74,16 @@ export function loginUser(email: string, password: string): User | null {
   return user ?? null;
 }
 
-// ==========================
-// CART - ADD
-// ==========================
+export function checkEmailExists(email: string): boolean {
+  const user = database.getFirstSync<User>(
+    `
+      SELECT id FROM users
+      WHERE email = ?;
+    `,
+    [email],
+  );
+  return user !== null;
+}
 
 export function addProductToCart(item: CartItem) {
   const existing = database.getFirstSync<CartItem>(
@@ -139,10 +130,6 @@ export function addProductToCart(item: CartItem) {
   }
 }
 
-// ==========================
-// CART - INCREASE
-// ==========================
-
 export function increaseItemQuantity(userId: number, productId: string) {
   database.runSync(
     `
@@ -153,10 +140,6 @@ export function increaseItemQuantity(userId: number, productId: string) {
     [userId, productId],
   );
 }
-
-// ==========================
-// CART - DECREASE
-// ==========================
 
 export function decreaseItemQuantity(userId: number, productId: string) {
   const item = database.getFirstSync<CartItem>(
@@ -190,10 +173,6 @@ export function decreaseItemQuantity(userId: number, productId: string) {
   );
 }
 
-// ==========================
-// CART - REMOVE
-// ==========================
-
 export function removeItem(userId: number, productId: string) {
   database.runSync(
     `
@@ -203,10 +182,6 @@ export function removeItem(userId: number, productId: string) {
     [userId, productId],
   );
 }
-
-// ==========================
-// CART - GET
-// ==========================
 
 export function getCartByUser(userId: number) {
   return database.getAllSync<CartItem>(
