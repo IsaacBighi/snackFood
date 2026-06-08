@@ -1,47 +1,114 @@
-import { createContext, useContext } from 'react';
-import { addProductToCart } from '../sqlite';
+import type React from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  addProductToCart,
+  type CartItem,
+  decreaseItemQuantity,
+  getCartByUser,
+  increaseItemQuantity,
+  removeItem,
+} from '../sqlite';
 import { useAuth } from './authContext';
 
-type Product = {
-  id: string;
+// Definição da estrutura do produto para eliminar o "any"
+interface Product {
+  id: string | number;
   name: string;
   category: string;
+  image?: string;
   price: number;
-  image: string;
-};
+}
 
-type CartContextData = {
-  addToCart: (product: Product) => void;
-};
+interface CartContextData {
+  items: CartItem[];
+  addItem: (product: Product) => void;
+  increaseQuantity: (productId: string) => void;
+  decreaseQuantity: (productId: string) => void;
+  clearCart: () => void;
+  totalValue: number;
+}
 
-const CartContext = createContext({} as CartContextData);
+const CartContext = createContext<CartContextData>({} as CartContextData);
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [items, setItems] = useState<CartItem[]>([]);
   const { user } = useAuth();
 
-  function addToCart(product: Product) {
-    if (!user?.id) {
-      console.log('User not logged');
-      return;
+  const loadCartItems = () => {
+    if (user?.id) {
+      const cartData = getCartByUser(user.id);
+      setItems(cartData);
+    } else {
+      setItems([]);
     }
+  };
 
-    addProductToCart({
+  useEffect(() => {
+    loadCartItems();
+  }, [user]);
+
+  const addItem = (product: Product) => {
+    if (!user?.id) return;
+
+    const newItem: CartItem = {
       userId: user.id,
       productId: String(product.id),
       name: product.name,
+      category: product.category,
+      image: product.image || '',
       price: product.price,
       quantity: 1,
-      category: product.category,
-      image: product.image,
+    };
+
+    addProductToCart(newItem);
+    loadCartItems();
+  };
+
+  const increaseQuantity = (productId: string) => {
+    if (!user?.id) return;
+    increaseItemQuantity(user.id, productId);
+    loadCartItems();
+  };
+
+  const decreaseQuantity = (productId: string) => {
+    if (!user?.id) return;
+    decreaseItemQuantity(user.id, productId);
+    loadCartItems();
+  };
+
+  const clearCart = () => {
+    if (!user?.id) return;
+
+    // Corrigido: Chaves acrescentadas para garantir que o forEach não retorna nada
+    items.forEach((item) => {
+      removeItem(user.id!, item.productId);
     });
-  }
+
+    loadCartItems();
+  };
+
+  const totalValue = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
 
   return (
-    <CartContext.Provider value={{ addToCart }}>
+    <CartContext.Provider
+      value={{
+        items,
+        addItem,
+        increaseQuantity,
+        decreaseQuantity,
+        clearCart,
+        totalValue,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
-}
+};
 
 export function useCart() {
   return useContext(CartContext);

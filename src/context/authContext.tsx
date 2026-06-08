@@ -1,72 +1,64 @@
-import { createContext, useContext, useState } from 'react';
-import { addProductToCart } from '../sqlite';
+import type React from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { checkEmailExists, createUser, loginUser, type User } from '../sqlite';
 
-type Product = {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  image: string;
-};
+interface AuthContextData {
+  user: User | null;
+  signIn: (email: string, password: string) => Promise<boolean>;
+  signUp: (
+    name: string,
+    email: string,
+    password: string,
+  ) => Promise<{ success: boolean; message?: string }>;
+  signOut: () => void;
+}
 
-type AuthUser = {
-  id?: number;
-  name: string;
-  email: string;
-  password: string;
-};
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-type AuthContextData = {
-  user: AuthUser | null;
-  signIn: (user: AuthUser) => void;
-  logout: () => void;
-  addToCart: (product: Product) => Promise<void>;
-};
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [user, setUser] = useState<User | null>(null);
 
-type Props = {
-  children: React.ReactNode;
-};
+  const signIn = async (email: string, password: string) => {
+    try {
+      const loggedUser = loginUser(email, password);
+      if (loggedUser) {
+        setUser(loggedUser);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      return false;
+    }
+  };
 
-const AuthContext = createContext({} as AuthContextData);
+  const signUp = async (name: string, email: string, password: string) => {
+    try {
+      const emailExists = checkEmailExists(email);
+      if (emailExists) {
+        return { success: false, message: 'Este e-mail já está cadastrado.' };
+      }
 
-export function AuthProvider({ children }: Props) {
-  const [user, setUser] = useState<AuthUser | null>(null);
+      createUser({ name, email, password });
+      return { success: true };
+    } catch (error) {
+      console.error('Erro ao cadastrar:', error);
+      return { success: false, message: 'Erro interno ao salvar dados.' };
+    }
+  };
 
-  function signIn(userData: AuthUser) {
-    setUser(userData);
-  }
-
-  function logout() {
+  const signOut = () => {
     setUser(null);
-  }
-
-  async function addToCart(product: Product) {
-    if (!user?.id) return;
-
-    await addProductToCart({
-      userId: user.id,
-      productId: product.id,
-      name: product.name,
-      category: product.category,
-      image: product.image,
-      price: product.price,
-      quantity: 1,
-    });
-  }
+  };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        signIn,
-        logout,
-        addToCart,
-      }}
-    >
+    <AuthContext.Provider value={{ user, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
 export function useAuth() {
   return useContext(AuthContext);
