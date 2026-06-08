@@ -2,13 +2,9 @@ export const theme = {
   colors: {
     primary: '#E8390E',
     primaryLight: '#FAECE7',
-
-    background: '#FFFFFF',
-
+    background: '#FAFAFA',
     text: '#1A1A1A',
-
-    gray: '#555555',
-
-    border: '#F5F5F5',
+    gray: '#666666',
+    border: '#E5E5E5',
   },
 };

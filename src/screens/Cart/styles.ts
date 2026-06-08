@@ -166,4 +166,5 @@ export const CheckoutButtonText = styled(Text)`
   color: #FFF;
   font-size: 16px;
   font-weight: bold;
+ bagground-color: #E8390E;
 `;
